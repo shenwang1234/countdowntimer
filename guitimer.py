@@ -52,7 +52,7 @@ def countdown():
             minutes += 59
             secs = 60
 
-        time.sleep(0.001)
+        time.sleep(1)
         secs -= 1
         hour.set('{0:2d}'.format(hours))
         minute.set('{0:2d}'.format(minutes))
