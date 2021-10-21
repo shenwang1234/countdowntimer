@@ -4,6 +4,7 @@ import winsound
 import tkinter as tk
 from tkinter import ttk
 paused = False
+running = False
 def validate(P):
     global paused
     if len(P) == 0 and not paused:
@@ -35,6 +36,9 @@ second.set('00')
 
 def countdown():
     global paused
+    global done
+    global running
+    running = True
     paused = False
     hours=int(hourEntry.get())
     minutes=int(minuteEntry.get())
@@ -52,7 +56,7 @@ def countdown():
             minutes += 59
             secs = 60
 
-        time.sleep(1)
+        time.sleep(0.001)
         secs -= 1
         hour.set('{0:2d}'.format(hours))
         minute.set('{0:2d}'.format(minutes))
@@ -65,6 +69,8 @@ def countdown():
             hour.set('00')
             minute.set('00')
             second.set('00')
+            running = False
+
 #https://www.tutorialspoint.com/how-do-i-create-an-automatically-updating-gui-using-tkinter-in-python
 
 
@@ -77,9 +83,15 @@ secondEntry.grid(row=1, column=3, padx=10, pady=10)
 
 
 def reset():
+    global done
+    global running
+    running = False
+    done=True
     hour.set('00')
     minute.set('00')
     second.set('00')
+
+
 
 def update(hours,minutes,secs):
     # actions to perform
@@ -91,11 +103,12 @@ def update(hours,minutes,secs):
 
 def pause():
     global  paused
-    if not paused:
+    global running
+    if not paused and running:
         paused=True
         button_pause.config(text="resume")
         root.update()
-    elif paused:
+    elif paused and running:
         paused = False
         button_pause.config(text="pause")
         countdown()
